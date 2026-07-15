@@ -1,3 +1,27 @@
+from flask import Flask, request, jsonify
+import asyncio
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+from google.protobuf.json_format import MessageToJson
+import binascii
+import aiohttp
+import requests
+import json
+import like_pb2
+import like_count_pb2
+import uid_generator_pb2
+from google.protobuf.message import DecodeError
+import threading
+import time
+import os
+from datetime import datetime, timedelta
+
+app = Flask(__name__)
+
+# Token management
+TOKEN_CACHE = {}
+TOKEN_CACHE_TIME = {}
+TOKEN_REFRESH_INTERVAL = 7200  # 2 hours in seconds
 def load_accounts(server_name):
     """Load accounts from text file"""
     try:
