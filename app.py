@@ -30,6 +30,8 @@ def load_accounts(server_name):
             filename = "account.ind.txt"
         elif server_name in {"BR", "US", "SAC", "NA"}:
             filename = "account.br.txt"
+        elif server_name == "MENA":  # إدخال سيرفر مينا
+            filename = "account.mena.txt"
         else:
             filename = "account.bd.txt"
         
@@ -53,6 +55,8 @@ def save_tokens(server_name, tokens):
             filename = "token_ind.json"
         elif server_name in {"BR", "US", "SAC", "NA"}:
             filename = "token_br.json"
+        elif server_name == "MENA":  # إدخال سيرفر مينا
+            filename = "token_mena.json"
         else:
             filename = "token_bd.json"
         
@@ -135,6 +139,8 @@ def load_tokens(server_name):
             filename = "token_ind.json"
         elif server_name in {"BR", "US", "SAC", "NA"}:
             filename = "token_br.json"
+        elif server_name == "MENA":  # إدخال سيرفر مينا
+            filename = "token_mena.json"
         else:
             filename = "token_bd.json"
         
@@ -160,7 +166,7 @@ def auto_refresh_tokens():
     """Background thread to automatically refresh tokens"""
     while True:
         try:
-            servers = ["IND", "BR", "US", "SAC", "NA", "BD"]
+            servers = ["IND", "BR", "US", "SAC", "NA", "BD", "MENA"]  # زيادة سيرفر مينا في التحديث التلقائي
             for server in servers:
                 app.logger.info(f"Auto-refreshing tokens for {server}...")
                 refresh_tokens_for_server(server)
@@ -265,6 +271,8 @@ def make_request(encrypt, server_name, token):
             url = "https://client.ind.freefiremobile.com/GetPlayerPersonalShow"
         elif server_name in {"BR", "US", "SAC", "NA"}:
             url = "https://client.us.freefiremobile.com/GetPlayerPersonalShow"
+        elif server_name == "MENA":  # رابط جلب البيانات لسيرفر مينا
+            url = "https://client.mena.freefiremobile.com/GetPlayerPersonalShow"
         else:
             url = "https://clientbp.ggpolarbear.com/GetPlayerPersonalShow"
         edata = bytes.fromhex(encrypt)
@@ -338,6 +346,8 @@ def handle_requests():
                 url = "https://client.ind.freefiremobile.com/LikeProfile"
             elif server_name in {"BR", "US", "SAC", "NA"}:
                 url = "https://client.us.freefiremobile.com/LikeProfile"
+            elif server_name == "MENA":  # رابط اللايكات لسيرفر مينا
+                url = "https://client.mena.freefiremobile.com/LikeProfile"
             else:
                 url = "https://clientbp.ggpolarbear.com/LikeProfile"
 
@@ -387,7 +397,7 @@ def refresh_tokens_endpoint():
 @app.route('/token_status', methods=['GET'])
 def token_status():
     """Check token status for all servers"""
-    servers = ["IND", "BR", "US", "SAC", "NA", "BD"]
+    servers = ["IND", "BR", "US", "SAC", "NA", "BD", "MENA"]  # زيادة مينا هنا باش تبان الحالة ديالها
     status = {}
     for server in servers:
         tokens = load_tokens(server)
